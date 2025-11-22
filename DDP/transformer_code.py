@@ -1,7 +1,3 @@
-import torch.nn as nn
-from torch.utils.data import DataLoader, Dataset, TensorDataset
-import torch.optim as optim
-from utils import *
 # Training Phase
 
 import torch
@@ -115,6 +111,7 @@ class Position_Feedforward(nn.Module):
          x = self.fc2(x)
          x = self.dropout(x)
          return x
+
 '''
 This is my Custom Transformer Decoder Architeture code which has 'N' number layers
 and can be used for the tasks like text generation
@@ -128,7 +125,7 @@ class Multi_Decoder(nn.Module):
         self.norm1 = nn.LayerNorm(d_model)
         self.norm2 = nn.LayerNorm(d_model)
         self.dropout = nn.Dropout(dropout)
-    
+
     def forward(self, x):
         atten_op = self.Atten(x)
         x = self.norm1(x+self.dropout(atten_op))
@@ -149,7 +146,7 @@ class Chatbot(nn.Module):
         ])
         self.final_norm = nn.LayerNorm(d_model)
         self.out_layer = nn.Linear(d_model, vocab_size)
-    
+
     def forward(self, x):
         embed_op = self.embed(x) * math.sqrt(self.d_model)
         x = self.pos(embed_op)
@@ -159,5 +156,3 @@ class Chatbot(nn.Module):
         x = self.final_norm(x)
         x = self.out_layer(x)
         return x
-        
-    
